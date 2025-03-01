@@ -1,0 +1,42 @@
+name: Build and Deploy to Public Repo
+
+on:
+  push:
+    branches:
+      - main  # Sostituisci con il nome del branch che vuoi monitorare
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout del codice del repository privato
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up PlatformIO
+        uses: platformio/actions/setup@v2
+        with:
+          platform: https://github.com/maxgerhardt/platform-raspberrypi.git
+          version: latest     
+      
+      # Comandi per compilare il codice (adatta secondo le tue necessità)
+      - name: Build project
+        run: |
+          pio run -e pico 
+
+      # Pusha il codice compilato nel repository pubblico
+      - name: Deploy to public repository
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          
+          git clone https://x-access-token:${{ secrets.DEPLOY_TOKEN }}@github.com/giupo/ded_releases.git deploy_repo          
+        
+          cp deploy_repo/.pio/build/pico/firmware.uf2
+          rm -rf deploy_repo
+                    
+          git add .
+          git commit -m "Nuova build - $(date)"
+          git push
+
