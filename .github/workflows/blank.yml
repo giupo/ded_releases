@@ -15,7 +15,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up PlatformIO
-        uses: platformio/actions/setup@v2
+        uses: platformio/action@v2  
         with:
           platform: https://github.com/maxgerhardt/platform-raspberrypi.git
           version: latest     
