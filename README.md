@@ -6,6 +6,6 @@ To execute the test:
   - run a Powershell *as Administrator*
     - cd into the project directory and type:
       ```
-      powershell -ExecutionPolicy Bypass -File .\scripts\TEST01.ps1
+      powershell -ExecutionPolicy Bypass -File .\scripts\TEST01.ps1 -portName <_YOUR COM_>
       ```
     
